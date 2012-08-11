@@ -1,0 +1,16 @@
+.grafico{
+	border:1px solid #3a9edf;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	display: block;
+}
+
+.letra_branca{
+	color: white;
+}
+
+.imgBotao{
+	cursor: hand;
+	border:0;
+}
