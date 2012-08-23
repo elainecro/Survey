@@ -47,3 +47,9 @@ CREATE TABLE usuarios(
 
 INSERT INTO usuarios (strNome, strLogin, strSenha, chrAcesso, bAtivo)
 	VALUES ('Elaine Cristina', 'elaine', '128bc66e311b0d7bbbfb297ccb14bd10', 'A', 1);
+
+INSERT INTO usuarios (strNome, strLogin, strSenha, chrAcesso, bAtivo)
+	VALUES ('Diego', 'diego', '078c007bd92ddec308ae2f5115c1775d', 'A', 1);
+
+INSERT INTO usuarios (strNome, strLogin, strSenha, chrAcesso, bAtivo)
+	VALUES ('Jeremias', 'jeremias', '729df251ee41cf92d45ec11a87c60ec0', 'A', 1);
