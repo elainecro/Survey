@@ -78,21 +78,24 @@
             <ul class="nav">
               <li class="<? if (!$p) echo 'active'; ?>"><a href="principal.php">Home</a></li>
 
-              <? $arrayMenu = array('questionarios', 'questgrupos', 'questcampos');?>
+              <? $arrayMenu = array('questionarios', 'questgrupos', 'questcampos', 'usuarios');?>
 
               <li class="<? if (in_array($p, $arrayMenu)) echo 'active'; ?> dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Cadastros<b class="caret"></b></a>
                 <ul class="dropdown-menu">
-                  <li class="<? if ($p=='gestao-politicas') echo 'active'; ?>">
+                  <li class="<? if ($p=='questionarios') echo 'active'; ?>">
                     <a href="?p=questionarios">Questionários</a>
                   </li>
-                  <li class="<? if ($p=='gestao-objetivos_metas') echo 'active'; ?>">
+                  <li class="<? if ($p=='questgrupos') echo 'active'; ?>">
                     <a href="?p=questgrupos">Grupos</a>
                   </li>
-                  <li class="<? if ($p=='gestao-documentos') echo 'active'; ?>">
+                  <li class="<? if ($p=='questcampos') echo 'active'; ?>">
                     <a href="?p=questcampos">Campos</a>
                   </li>
                   <li class="divider"></li>
+                  <li class="<? if ($p=='usuarios') echo 'active'; ?>">
+                    <a href="?p=usuarios">Usuários</a>
+                  </li>
                 </ul>
               </li>
 

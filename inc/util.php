@@ -69,11 +69,12 @@ function date2data($date)
 
 function tiraAcentos($texto)
 {
+	$texto = htmlentities($texto, ENT_QUOTES, 'UTF-8');
 	$texto = strtolower($texto);
 	$texto = trim($texto);
 	$texto = str_replace(" ", "", $texto);
 	$texto = str_replace("/", "", $texto);
-	$texto = str_replace(",", "", $texto);	
+	//$texto = str_replace(",", "", $texto);	
 	$texto = str_replace("!", "", $texto);
 	$texto = str_replace("@", "", $texto);
 	$texto = str_replace("#", "", $texto);
@@ -95,6 +96,11 @@ function tiraAcentos($texto)
 	$texto = str_replace("<", "", $texto);
 	$texto = str_replace(">", "", $texto);
 	$texto = str_replace("|", "", $texto);
+	$texto = str_replace("tilde;", "", $texto);
+	$texto = str_replace("acute;", "", $texto);
+	$texto = str_replace("circ;", "", $texto);
+	$texto = str_replace("grave;", "", $texto);
+	$texto = str_replace("cedil;", "", $texto);
 			
 	$acentos = array(
 		'A' => '/Á|À|Â|Ã|Ä/',
@@ -132,12 +138,29 @@ function primeiraMaiuscula($palavra)
 	return ucfirst($palavra);
 }
 
+function buscaNomeTabela($codQuestionario){
+	$sql = "SELECT strNomeInterno FROM questionarios WHERE codQuestionario = $codQuestionario";
+	$rst = mysql_query($sql);
+	return mysql_result($rst, 0, 0);
+}
+
 function criaTabela($novaTabela){
 	$sql = "CREATE TABLE $novaTabela (
 				cod int(4) not null auto_increment,
 				primary key(cod)
 			)ENGINE=INNODB";
 	mysql_query($sql);
+}
+
+function criaCampoQuestionario($codQuestionario, $strNomeInterno){
+	//busco o nome da tabela do questionario
+	$nomeTabela = buscaNomeTabela($codQuestionario);
+	echo $nomeTabela;
+
+	//se o tipo for igual a checkbox, crio tabela associativa. Senão crio o campo na tabela do questionario
+	$sql = "ALTER TABLE $nomeTabela ADD COLUMN $strNomeInterno varchar(300)";
+	echo $sql;
+	$rst = mysql_query($sql);
 }
 /**
  * Função fazerLogin - realiza login corretamente e registra variaveis e sessoes que serão utilizadas por todo o sistema

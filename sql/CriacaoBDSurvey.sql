@@ -21,6 +21,7 @@ CREATE TABLE questionario_grupos(
 CREATE TABLE questionario_campos(
 	codQuestCampo int(4) NOT NULL AUTO_INCREMENT,
 	codQuestGrupo int(4),
+	codQuestionario int(4),
 	strNome varchar(100),
 	strNomeInterno varchar(100),
 	strTipo	varchar(20),
@@ -29,7 +30,7 @@ CREATE TABLE questionario_campos(
 	strValores text,
 	intOrdem int(2),
 	bAtivo tinyint(1),
-	dtCricao timestamp DEFAULT CURRENT_TIMESTAMP(),
+	dtCriacao timestamp DEFAULT CURRENT_TIMESTAMP(),
 	primary key(codQuestCampo)
 )ENGINE=INNODB;
 

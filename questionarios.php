@@ -53,13 +53,19 @@
 			$strNome = htmlentities($strNome, ENT_QUOTES, 'UTF-8');
 			$strNomeInterno = htmlentities($strNomeInterno, ENT_QUOTES, 'UTF-8');
 			$strNomeInterno = tiraAcentos(tiraEspacos($strNomeInterno));
-			
-			$qry = "INSERT INTO questionarios (strNome, strNomeInterno, dtCriacao, bAtivo)
-								  VALUES ('$strNome', '$strNomeInterno', '$dtCriacao', '$bAtivo')";
-			$rst = mysql_query($qry);
 
-			if ($rst){
-				criaTabela($strNomeInterno);
+			//antes de inserir verifica se já existe algum questionário com esse nome interno
+			$sqlVerify = mysql_query("SELECT * FROM questionarios WHERE strNomeInterno = '$strNomeInterno' ");
+			if (mysql_num_rows($sqlVerify) <= 0){				
+				$qry = "INSERT INTO questionarios (strNome, strNomeInterno, dtCriacao, bAtivo)
+									  VALUES ('$strNome', '$strNomeInterno', '$dtCriacao', '$bAtivo')";
+				$rst = mysql_query($qry);
+
+				if ($rst){
+					criaTabela($strNomeInterno);
+				}
+			} else {
+				echo "<script>alert('Já existe um questionário com este nome interno. Por favor, escolha outro nome.');</script>";
 			}
 		}
 		//echo $qry;
@@ -72,6 +78,11 @@
 		if($a=='d'){	
 			//deletar
 			if($c){
+				//deletando todos os campos relacionados ao questionario
+				$sqlDel = mysql_query("DELETE FROM questionario_campos qc WHERE qc.codQuestGrupo IN (SELECT codQuestGrupo FROM questionario_grupos WHERE codQuestionario = $c)");
+				//deletando todos os grupos relacionados ao questionario
+				$sqlDel = mysql_query("DELETE FROM questionario_grupos WHERE codQuestionario = $c");
+
 				//antes de deletar tenho que apagar a tabela relacionada ao questionario
 				$sqltabRel = mysql_query("SELECT strNomeInterno FROM questionarios WHERE codQuestionario = $c");
 				$tabRel = mysql_result($sqltabRel, 0, 0);
@@ -108,10 +119,10 @@
 	</div>
 
 	<div class="control-group">
-		<label class="control-label" for="strNomeInterno">Nome do questionário:</label>
+		<label class="control-label" for="strNomeInterno">Nome interno:</label>
 		<div class="controls">
 			<input type="text" class="input-xlarge" id="strNomeInterno" name="strNomeInterno" value="<?=$strNomeInterno?>" placeholder="Nome identificador interno do questionario." <?if($c) echo 'disabled';?>/>
-			<span>Atenção: O nome definido na inserção não poderá mais ser alterado.</span>
+			<span><strong>Atenção:</strong> O nome definido na inserção não poderá mais ser alterado. Evite acentos e espaços.</span>
 		</div>
 	</div>
 

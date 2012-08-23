@@ -1,0 +1,9 @@
+Seguimos aquele padrão mesmo da proposta que eu te enviei, onde para gerar um questionário você possui três cadastros. Te explicarei a seguir utilizando como exemplo a descrição daquele documento que você compartilhou conosco:
+Cadastro do Questionário - Este cadastro é o start do seu formulário. Aqui você define o nome do questionário e um nome interno. Ao criar um novo questionário, uma tabela será criada no nosso banco de dados e essa tabela servirá exclusivamente para o questionário criado. Por exemplo:
+Nome do questionário: Mapeando características dos desenvolvedores web do Brasil
+Nome interno: mapdevwebbr
+Cadastro de Grupos - aqui você define as subdivisões do seu questionário informando o título, subtítulo e ordem do grupo. Por exemplo:
+Título: Quem é você?
+Sub Título: Perguntas básicas sobre idade, sexo, cargo e etc.
+Ordem: inteiro que define a ordem em que este grupo será exibido no questionário.
+Cadastro de Campos - 

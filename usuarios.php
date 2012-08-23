@@ -1,6 +1,7 @@
 <script>
 	function habilitaSenha(){
 		document.formUsuario.strSenha.disabled = false;
+		document.formUsuario.strSenha.value = "";
 	}
 
 	function confirma_exclusao(url){
@@ -11,13 +12,11 @@
 </script>
 <?
 	session_start();
-	if ((!$_SESSION["login"]) || (!$_SESSION['idempresa'])){
+	if ((!$_SESSION["login"])){
 		echo "<script>location.href='index.php';</script>";  
 	}
 
 	include_once('inc/util.php');
-
-	$idempresa = $_SESSION['idempresa'];
 
 	//definições de paginação
 	if (!$i_ini) $i_ini = 0;
@@ -29,10 +28,7 @@
 	if ($c){
 		$qryUsuarios = "SELECT * FROM usuarios WHERE codUsuario = $c";
 	} else {
-		$qryUsuarios = "SELECT u.*, e.strNome as strEmpresa FROM usuarios u 
-		INNER JOIN empresas e ON e.codEmpresa = u.codEmpresa ";
-		if ($idempresa!=1) { $qryUsuarios .= " AND e.codEmpresa = $idempresa ";}
-		$qryUsuarios .= " ORDER BY u.strNome";
+		$qryUsuarios = "SELECT * FROM usuarios ORDER BY strNome";
 
 		$qryTotal = $qryUsuarios;
 		$rstTotal = mysql_query($qryTotal);
@@ -46,15 +42,13 @@
 		if ($c){
 			//update
 			if ($bAtivo) $bAtivo = 1; else $bAtivo = 0;			
-			if (!$cbEmpresa) $cbEmpresa = $idempresa;
 			$strNome = htmlentities($strNome, ENT_QUOTES, 'UTF-8');
 			$strLogin = htmlentities($strLogin, ENT_QUOTES, 'UTF-8');
 
 			$qry = "UPDATE usuarios
 					   SET strNome = '$strNome',
 					   	   strLogin = '$strLogin',
-					   	   codEmpresa = '$cbEmpresa',
-					   	   chrAcesso = '$cbAcesso',
+					   	   chrAcesso = 'A',
 					   	   bAtivo = '$bAtivo'";
 			if ($strSenha){
 				$strSenha = md5($strSenha);
@@ -64,16 +58,15 @@
 			$rst = mysql_query($qry);
 		} else {
 			if ($bAtivo) $bAtivo = 1; else $bAtivo = 0;
-			if (!$cbEmpresa) $cbEmpresa = $idempresa;
 			$strSenha = md5($strSenha);
 			$strNome = htmlentities($strNome, ENT_QUOTES, 'UTF-8');
 			$strLogin = htmlentities($strLogin, ENT_QUOTES, 'UTF-8');
 			
-			$qry = "INSERT INTO usuarios (codEmpresa, strNome, strLogin, strSenha, chrAcesso, bAtivo)
-								  VALUES ('$cbEmpresa', '$strNome', '$strLogin', '$strSenha', '$cbAcesso', '$bAtivo')";
+			$qry = "INSERT INTO usuarios (strNome, strLogin, strSenha, chrAcesso, bAtivo)
+								  VALUES ('$strNome', '$strLogin', '$strSenha', 'A', '$bAtivo')";
 			$rst = mysql_query($qry);
 		}
-		echo "<script>location.href='?p=geral-usuarios';</script>";
+		echo "<script>location.href='?p=usuarios';</script>";
 	}
 ?>
 
@@ -85,7 +78,7 @@
 				$qryDel = "DELETE FROM usuarios WHERE codUsuario = $c";
 				$rstDel = mysql_query($qryDel);
 			}
-			echo "<script>location.href='?p=geral-usuarios';</script>";
+			echo "<script>location.href='?p=usuarios';</script>";
 		}
 		if ($c){
 			$rowUsuario = mysql_fetch_array($rstUsuarios);
@@ -93,7 +86,6 @@
 			$strLogin = html_entity_decode($rowUsuario['strLogin'], ENT_QUOTES, 'UTF-8');
 			$strSenha = $rowUsuario['strSenha'];
 			$cbAcesso = $rowUsuario['chrAcesso'];
-			$cbEmpresa = $rowUsuario['codEmpresa'];
 			$bAtivo = $rowUsuario['bAtivo'];
 		}
 ?>
@@ -133,7 +125,7 @@
 		</div>
 	</div>
 
-	<div class="control-group">
+	<!--<div class="control-group">
 		<label class="control-label" for="cbAcesso">Tipo de Acesso:</label>
 		<div class="controls">
 			<select name="cbAcesso" id="cbAcesso" required>
@@ -142,7 +134,7 @@
 				<option value="V" <? if($cbAcesso=='V') echo "selected"; ?>>Vendedor</option>
 			</select>
 		</div>
-	</div>
+	</div>-->
 
 	<div class="control-group">
 		<label class="control-label" for="strLogin">Login:</label>
@@ -164,13 +156,14 @@
 		<label class="checkbox offset2">
 			<input type="checkbox" id="bAtivo" name="bAtivo"
 				<? if ($bAtivo==1) echo "checked"; else if ($bAtivo==0) echo ""; else echo "checked"; ?> 
+				<? if(!$c) echo "checked"; ?>
 			/> Ativo
 		</label>
 	</div>
 
   	<div class="form-actions">
   		<button type="submit" class="btn btn-primary">Salvar</button>
-  		<a href="?p=geral-usuarios" class="btn">Cancelar</a>
+  		<a href="?p=usuarios" class="btn">Cancelar</a>
   	</div>
 </form>
 
@@ -211,13 +204,13 @@
 			  <td><?=$rowUsuario['strEmpresa']?></td>
 			  <? } ?>
 			  <td>
-			  	<a class="btn" href="?p=geral-usuarios&a=e&c=<?=$rowUsuario['codUsuario']?>">
+			  	<a class="btn" href="?p=usuarios&a=e&c=<?=$rowUsuario['codUsuario']?>">
 					<i class="icon-pencil"></i>
 				</a>
 			  </td>
 			  <td>
 			  	<? $codUsuario = $rowUsuario['codUsuario']; ?>
-			  	<a class="btn" onClick="confirma_exclusao('?p=geral-usuarios&a=d&c=<?=$codUsuario?>');">
+			  	<a class="btn" onClick="confirma_exclusao('?p=usuarios&a=d&c=<?=$codUsuario?>');">
 					<i class="icon-trash"></i>
 				</a>
 			  </td>
@@ -229,11 +222,11 @@
 					<ul class="pager">
 						<? if ($prox > $i_max) { ?>
 						<li>
-							<a href="?p=geral-usuarios&i_ini=<?=$ant?>">Anterior</a>
+							<a href="?p=usuarios&i_ini=<?=$ant?>">Anterior</a>
 						</li>
 						<? } if ($totItens - ($i_ini + $i_max) > 0) { ?>
 						<li>
-							<a href="?p=geral-usuarios&i_ini=<?=$prox?>">Próximo</a>
+							<a href="?p=usuarios&i_ini=<?=$prox?>">Próximo</a>
 						</li>
 						<? } ?>
 					</ul>      
@@ -246,7 +239,7 @@
     </div>
 
     <div class="span4">
-    	<a href="?p=geral-usuarios&a=i" class="btn btn-primary">Incluir Usuário</a>
+    	<a href="?p=usuarios&a=i" class="btn btn-primary">Incluir Usuário</a>
     </div>
 </div>
 
