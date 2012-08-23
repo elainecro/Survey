@@ -1,9 +1,22 @@
 Seguimos aquele padrão mesmo da proposta que eu te enviei, onde para gerar um questionário você possui três cadastros. Te explicarei a seguir utilizando como exemplo a descrição daquele documento que você compartilhou conosco:
-Cadastro do Questionário - Este cadastro é o start do seu formulário. Aqui você define o nome do questionário e um nome interno. Ao criar um novo questionário, uma tabela será criada no nosso banco de dados e essa tabela servirá exclusivamente para o questionário criado. Por exemplo:
-Nome do questionário: Mapeando características dos desenvolvedores web do Brasil
-Nome interno: mapdevwebbr
-Cadastro de Grupos - aqui você define as subdivisões do seu questionário informando o título, subtítulo e ordem do grupo. Por exemplo:
-Título: Quem é você?
-Sub Título: Perguntas básicas sobre idade, sexo, cargo e etc.
-Ordem: inteiro que define a ordem em que este grupo será exibido no questionário.
-Cadastro de Campos - 
+
+	1) Cadastro do Questionário - Este cadastro é o start do seu formulário. Aqui você define o nome do questionário e um nome interno. Ao criar um novo questionário, uma tabela será criada no nosso banco de dados e essa tabela servirá exclusivamente para o questionário criado. Por exemplo:
+		- Nome do questionário: Mapeando características dos desenvolvedores web do Brasil
+		- Nome interno: mapdevwebbr
+	
+	2) Cadastro de Grupos - aqui você define as subdivisões do seu questionário informando o título, subtítulo e ordem do grupo. Por exemplo:
+		- Título: Quem é você?
+		- Sub Título: Perguntas básicas sobre idade, sexo, cargo e etc.
+		- Ordem: inteiro que define a ordem em que este grupo será exibido no questionário.
+
+	3) Cadastro de Campos - aqui você cadastra cada pergunta do seu questionário. Por exemplo:
+		- Questionário: Selecione o questionário ao qual a pergunta que será cadastrada pertence.
+		- Grupo: Este combo será automaticamente atualizado de acordo com o questionário selecionado, escolha um grupo então.
+		- Nome: Informe o nome da pergunta. Ex: Qual a sua idade?
+		- Nome interno: defina um nome interno. Este nome será usado para identificar a coluna que armazenará as informações na tabela do questionário selecionado. O sistema deve retirar automaticamente os acentos e espaços inseridos neste campo.
+		- Tipo: Informe se o campo será um combobox, um grupo de checkboxes ou de radios.
+		- Descrição: Se desejar, informe uma descrição para o campo.
+		- Opções: Informe a lista de opções disponíveis para os usuários responderem. Cada opção deve ser separada por vírgula. Ex: até 18 anos, 19-25, 26-30, 31-40, 41-44, 45-50, 61-64, 65 ou mais
+		- Valores: Este campo é só para visualização. Este replicará a lista de opções, porém sem espaços e acentos. Será somente para facilitar a utilização interna do próprio sistema.
+		- Ordem: Se quiser definir a melhor ordem para a exibição das perguntas, informe números inteiros.
+		- Ativo: Marque se a pergunta está ativa ou inativa. Perguntas inativas não aparecerão nos formulários e nem nos resultados.
