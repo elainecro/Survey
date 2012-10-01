@@ -39,7 +39,7 @@
 	$rstQuestGrupo = mysql_query($qryQuestGrupo);
 
 	if ($_POST) {
-		if (!$codQuestionario){
+		if ($codQuestionario){
 			if ($c){
 				//update
 				echo $bAtivo;
